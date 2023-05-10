@@ -2,13 +2,17 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.model.UserEntity;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.security.Principal;
 
 
 
-@Controller
+@RestController
+@RequestMapping("/api")
+
 public class UserController {
 
 
@@ -19,15 +23,26 @@ public class UserController {
     }
 
 
+//    @GetMapping("/user")
+//    public String pageForUser(Principal principal, Model model) {
+//        UserEntity userEntity1 =  userService.getInfoByEmail(principal.getName());
+//        String email = principal.getName();
+//
+//        model.addAttribute("thisUser",userEntity1);
+//        model.addAttribute("email",email);
+//        model.addAttribute("roles",userEntity1.getRoles());
+//        return "user";
+//    }
+
     @GetMapping("/user")
-    public String pageForUser(Principal principal, Model model) {
+    public UserEntity pageForUser(Principal principal, Model model) {
         UserEntity userEntity1 =  userService.getInfoByEmail(principal.getName());
         String email = principal.getName();
 
         model.addAttribute("thisUser",userEntity1);
         model.addAttribute("email",email);
         model.addAttribute("roles",userEntity1.getRoles());
-        return "user";
+        return userEntity1;
     }
 
 }

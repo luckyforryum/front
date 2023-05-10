@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.configs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,8 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
-                .antMatchers("/admin/**").hasAuthority("Admin")
+
+//                .antMatchers("/api/admin/**").hasAuthority("Admin")
+//                .antMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority("Admin")
+
+                .antMatchers("/api/admin/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/admin/**").permitAll()
+//                .antMatchers("/api/user").hasAnyAuthority("Admin","User")
                 .antMatchers("/user").hasAnyAuthority("Admin","User")
                 .anyRequest()
                 .authenticated()
@@ -45,10 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll();
+//                .invalidateHttpSession(true)
+//                .clearAuthentication(true)
+//                .deleteCookies("JSESSIONID")
+                .permitAll()
+                .and().csrf().disable();
 
     }
 
@@ -61,4 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
+
 }

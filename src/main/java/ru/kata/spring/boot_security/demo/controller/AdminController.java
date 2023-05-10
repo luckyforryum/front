@@ -1,18 +1,20 @@
 package ru.kata.spring.boot_security.demo.controller;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.UserEntity;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.security.Principal;
-import java.util.List;
+import java.util.Optional;
 
 
-@Controller
+@RestController
+@RequestMapping("/api/admin")
+@CrossOrigin(origins = "*")
 public class AdminController {
 
     private final UserService userService;
@@ -24,36 +26,79 @@ public class AdminController {
     }
 
 
-
-
-    @GetMapping("/admin/showAllUsers")
-    public String showAllUsers(Principal principal,Model model) {
-        List<UserEntity> allUsers = userService.getAllUsers();
-        UserEntity userEntity = userService.getInfoByEmail(principal.getName());
-        model.addAttribute("email",principal.getName());
-        model.addAttribute("roles",userEntity.getRoles());
-        model.addAttribute("allRoles",roleService.getAllURoles());
-        model.addAttribute("allUsers",allUsers);
-        model.addAttribute("thisUser",userEntity);
-        return "all-users";
+    @GetMapping("/me")
+    public Optional<UserEntity> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<UserEntity> user = userService.findByEmail(userDetails.getUsername());
+        return user;
     }
+
+
+
+//    @GetMapping("/")
+//    public String showAllUsers(Principal principal,Model model) {
+//        List<UserEntity> allUsers = userService.getAllUsers();
+//        UserEntity userEntity = userService.getInfoByEmail(principal.getName());
+//        model.addAttribute("email",principal.getName());
+//        model.addAttribute("roles",userEntity.getRoles());
+//        model.addAttribute("allRoles",roleService.getAllURoles());
+//        model.addAttribute("allUsers",allUsers);
+//        model.addAttribute("thisUser",userEntity);
+//        return "all-users";
+//    }
+
+
+    @GetMapping("/getAllUsers")
+    @ResponseBody
+    public ResponseEntity<Iterable<UserEntity>> showAllUsers(Principal principal, Model model) {
+
+//        UserEntity userEntity = userService.getInfoByEmail(principal.getName());
+//        model.addAttribute("email",principal.getName());
+//        model.addAttribute("roles",userEntity.getRoles());
+//        model.addAttribute("allRoles",roleService.getAllURoles());
+////        model.addAttribute("allUsers",allUsers);
+//        model.addAttribute("thisUser",userEntity);
+        return ResponseEntity.ok().body(userService.getAllUsers());
+    }
+
+
+//    @PostMapping("/addNewUser")
+//    public String saveUser(@ModelAttribute UserEntity user) {
+//        userService.save(user);
+//        return "redirect:/admin/showAllUsers";
+//    }
 
     @PostMapping("/addNewUser")
-    public String saveUser(@ModelAttribute UserEntity user) {
+    public UserEntity saveUser(@RequestBody UserEntity user) {
         userService.save(user);
-        return "redirect:/admin/showAllUsers";
+        return user;
     }
 
 
-    @PostMapping("/admin/showAllUsers/update-info")
-    public String edit(@ModelAttribute UserEntity editUser) {
+//    @PostMapping("/admin/showAllUsers/update-info")
+//    public String edit(@ModelAttribute UserEntity editUser) {
+//        userService.update(editUser);
+//        return "redirect:/admin/showAllUsers";
+//    }
+
+    @PutMapping("/editUser")
+    public UserEntity edit(@RequestBody UserEntity editUser) {
         userService.update(editUser);
-        return "redirect:/admin/showAllUsers";
+        return editUser;
     }
 
-    @PostMapping("/admin/showAllUsers/{userId}")
+
+
+//    @PostMapping("/admin/showAllUsers/{userId}")
+//    public String deleteUser(@PathVariable("userId") Long id) {
+//        userService.delete(id);
+//        return "redirect:/admin/showAllUsers";
+//    }
+
+    @DeleteMapping("/delete/{userId}")
     public String deleteUser(@PathVariable("userId") Long id) {
         userService.delete(id);
-        return "redirect:/admin/showAllUsers";
+        return "User was deleted";
     }
 }

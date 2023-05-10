@@ -12,16 +12,15 @@ import java.util.Optional;
 @Repository
 public class UserDaoImpl implements UserDao {
     @PersistenceContext
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserDaoImpl(EntityManager entityManager, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.entityManager = entityManager;
+    public UserDaoImpl( BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
-    public List<UserEntity> getAllUsers() {
+    public Iterable<UserEntity> getAllUsers() {
         return entityManager.createQuery("from UserEntity", UserEntity.class).getResultList();
     }
 
@@ -46,8 +45,7 @@ public class UserDaoImpl implements UserDao {
     public UserEntity getInfoByEmail(String email) {
         TypedQuery<UserEntity> query = entityManager.createQuery(
                 "SELECT u FROM UserEntity u WHERE u.email = :email", UserEntity.class);
-        query.setParameter("email", email);
-        return query.getSingleResult();
+        return query.setParameter("email", email).getSingleResult();
     }
 
     @Override

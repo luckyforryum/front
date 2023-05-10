@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    public List<UserEntity> getAllUsers();
+    public Iterable<UserEntity> getAllUsers();
 
     Optional<UserEntity> findByEmail(String email);
 

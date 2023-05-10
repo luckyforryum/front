@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface UserDao {
 
-    public List<UserEntity> getAllUsers();
+    public Iterable<UserEntity> getAllUsers();
 
     Optional<UserEntity> findByEmail(String email);
 
