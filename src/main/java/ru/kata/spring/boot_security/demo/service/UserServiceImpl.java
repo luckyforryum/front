@@ -4,7 +4,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.UserEntity;
 
-import java.util.List;
 import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,5 +52,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(Long id) {
         userDao.delete(id);
+    }
+
+    @Override
+    public Optional<UserEntity> getUser(Long id) {
+        return userDao.getUser(id);
     }
 }

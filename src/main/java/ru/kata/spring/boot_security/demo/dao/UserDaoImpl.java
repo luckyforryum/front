@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
 import java.util.Optional;
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -62,12 +61,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public UserEntity getUser(Long id) {
-        return entityManager.find(UserEntity.class,id);
+    public Optional<UserEntity> getUser(Long id) {
+        return Optional.ofNullable(entityManager.find(UserEntity.class, id));
     }
 
     @Override
     public void delete(Long id) {
-        entityManager.remove(getUser(id));
+        getUser(id).ifPresent(user -> entityManager.remove(user));
     }
+
 }

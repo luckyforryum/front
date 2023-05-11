@@ -16,4 +16,5 @@ public interface UserService {
     public void update(UserEntity user);
 
     public void delete(Long id);
+    public Optional<UserEntity> getUser(Long id);
 }

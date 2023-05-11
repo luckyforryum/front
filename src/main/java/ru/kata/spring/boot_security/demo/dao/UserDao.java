@@ -15,6 +15,6 @@ public interface UserDao {
 
     public void update(UserEntity user);
 
-    public UserEntity getUser(Long id);
+    public Optional<UserEntity> getUser(Long id);
     public void delete(Long id);
 }

@@ -1,4 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +15,6 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/admin")
 @CrossOrigin(origins = "*")
 public class AdminController {
 
@@ -24,6 +25,8 @@ public class AdminController {
         this.userService = userService;
         this.roleService = roleService;
     }
+
+
 
 
     @GetMapping("/me")
@@ -53,15 +56,16 @@ public class AdminController {
     @ResponseBody
     public ResponseEntity<Iterable<UserEntity>> showAllUsers(Principal principal, Model model) {
 
-//        UserEntity userEntity = userService.getInfoByEmail(principal.getName());
-//        model.addAttribute("email",principal.getName());
-//        model.addAttribute("roles",userEntity.getRoles());
-//        model.addAttribute("allRoles",roleService.getAllURoles());
-////        model.addAttribute("allUsers",allUsers);
-//        model.addAttribute("thisUser",userEntity);
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
+
+
+
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<Optional<UserEntity>> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userService.getUser(id));
+    }
 
 //    @PostMapping("/addNewUser")
 //    public String saveUser(@ModelAttribute UserEntity user) {
@@ -70,9 +74,9 @@ public class AdminController {
 //    }
 
     @PostMapping("/addNewUser")
-    public UserEntity saveUser(@RequestBody UserEntity user) {
+    public ResponseEntity<UserEntity> saveUser(@RequestBody UserEntity user) {
         userService.save(user);
-        return user;
+        return ResponseEntity.ok().body(user);
     }
 
 
@@ -81,6 +85,9 @@ public class AdminController {
 //        userService.update(editUser);
 //        return "redirect:/admin/showAllUsers";
 //    }
+
+
+
 
     @PutMapping("/editUser")
     public UserEntity edit(@RequestBody UserEntity editUser) {
@@ -96,9 +103,9 @@ public class AdminController {
 //        return "redirect:/admin/showAllUsers";
 //    }
 
-    @DeleteMapping("/delete/{userId}")
-    public String deleteUser(@PathVariable("userId") Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
-        return "User was deleted";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
