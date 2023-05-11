@@ -10,11 +10,10 @@ import java.security.Principal;
 
 
 
-@RestController
+@Controller
 @RequestMapping("/api")
 
 public class UserController {
-
 
     private final UserService userService;
 
@@ -22,27 +21,9 @@ public class UserController {
         this.userService = userService;
     }
 
-
-//    @GetMapping("/user")
-//    public String pageForUser(Principal principal, Model model) {
-//        UserEntity userEntity1 =  userService.getInfoByEmail(principal.getName());
-//        String email = principal.getName();
-//
-//        model.addAttribute("thisUser",userEntity1);
-//        model.addAttribute("email",email);
-//        model.addAttribute("roles",userEntity1.getRoles());
-//        return "user";
-//    }
-
     @GetMapping("/user")
-    public UserEntity pageForUser(Principal principal, Model model) {
-        UserEntity userEntity1 =  userService.getInfoByEmail(principal.getName());
-        String email = principal.getName();
-
-        model.addAttribute("thisUser",userEntity1);
-        model.addAttribute("email",email);
-        model.addAttribute("roles",userEntity1.getRoles());
-        return userEntity1;
+    public String pageForUser() {
+        return "user";
     }
 
 }

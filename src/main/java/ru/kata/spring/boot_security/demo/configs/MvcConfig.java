@@ -2,14 +2,17 @@ package ru.kata.spring.boot_security.demo.configs;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.*;
-import ru.kata.spring.boot_security.demo.Conventer.StringToRoleConverter;
+import ru.kata.spring.boot_security.demo.conventer.StringToRoleConverter;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "ru.kata.spring.boot_security.demo.controller")
 public class MvcConfig implements WebMvcConfigurer {
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/META-INF/resources/", "classpath:/resources/",
+            "classpath:/static/", "classpath:/public/"
+    };
     private final StringToRoleConverter stringArrayToRoleListConverter;
     public MvcConfig(StringToRoleConverter stringArrayToRoleListConverter) {
         this.stringArrayToRoleListConverter = stringArrayToRoleListConverter;
@@ -24,16 +27,10 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addConverter(stringArrayToRoleListConverter);
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                .allowedHeaders("*")
-//                .allowCredentials(true)
-//                .maxAge(3600);
-//    }
-
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+    }
 
 
 }

@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.Conventer;
+package ru.kata.spring.boot_security.demo.conventer;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

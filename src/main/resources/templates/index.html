@@ -14,15 +14,15 @@
 
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark">
-<!--    <div>-->
-<!--        <span th:text = "${email}" class="text-white"> </span>-->
-<!--        <span class="text-white"> with roles: </span>-->
-<!--        <tr th:each="role :${roles}" >-->
-<!--            <span th:utext = "${role.getName()}"  class="text-white"> </span>-->
-<!--        </tr>-->
-<!--    </div>-->
-    <span class="ml-auto"><a class="nav-link text-light" href="/logout">Logout</a></span>
+<nav class="navbar navbar-dark bg-dark" id="navbar-info">
+<!--&lt;!&ndash;    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <span th:text = "${email}" class="text-white"> </span>&ndash;&gt;-->
+<!--&lt;!&ndash;        <span class="text-white"> with roles: </span>&ndash;&gt;-->
+<!--&lt;!&ndash;        <tr th:each="role :${roles}" >&ndash;&gt;-->
+<!--&lt;!&ndash;            <span th:utext = "${role.getName()}"  class="text-white"> </span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--    <span class="ml-auto"><a class="nav-link text-light" href="/logout">Logout</a></span>-->
 </nav>
 <div class="row" >
     <div class="col-2 mt-3 p-0">
@@ -165,13 +165,16 @@
 </div>
 
 
-<script  src="./templates/showAllUsers.js"></script>
+<script  src="/showAllUsers.js"></script>
 <script  src="/newUser.js"></script>
 <script  src="/getModalEdit.js"></script>
 <script  src="/editUser.js"></script>
 <script  src="/updateUserTable.js"></script>
 <script  src="/getModalDeleteUser.js"></script>
 <script  src="/deleteUser.js"></script>
+<script  src="/user-info.js"></script>
+<script  src="/navbar-info.js"></script>
+
 
 
 </body>

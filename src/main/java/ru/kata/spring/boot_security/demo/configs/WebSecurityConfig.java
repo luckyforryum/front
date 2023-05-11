@@ -29,14 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-
-//                .antMatchers("/api/admin/**").hasAuthority("Admin")
-//                .antMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority("Admin")
-
-                .antMatchers("/api/admin/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/admin/**").permitAll()
-//                .antMatchers("/api/user").hasAnyAuthority("Admin","User")
-                .antMatchers("/user").hasAnyAuthority("Admin","User")
+                .antMatchers("/admin").hasAuthority("Admin")
+                .antMatchers("/api/user").hasAnyAuthority("Admin","User")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -51,12 +45,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login")
-//                .invalidateHttpSession(true)
-//                .clearAuthentication(true)
-//                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
                 .and().csrf().disable();
-
     }
 
     @Bean

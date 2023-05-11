@@ -1,4 +1,4 @@
-fetch("http://localhost:8080/getAllUsers")
+fetch("http://localhost:8080/api/admin/getAllUsers")
 .then(res=>{
     res.json().then(
         data=>{

@@ -9,11 +9,9 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
-
     public AuthController(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
-
 
     @GetMapping("/login")
     public String showLoginPage() {
